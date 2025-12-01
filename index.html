@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moda Universitária</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8a2be2;
+            --primary-dark: #6a1cb0;
+            --bg-color: #f9f9f9;
+            --text-color: #333;
+            --accent-color: #ff6b6b;
+            --card-bg: #ffffff;
+            --content-bg: #ffffff;
+            --border-radius: 20px;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            
+            --left-bg-image: none;
+            --left-bg-size: cover;
+            --left-bg-position: center;
+            --right-bg-image: none;
+            --right-bg-size: cover;
+            --right-bg-position: center;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: 80vh;
+            flex-direction: column;
+        }
+        
+        @media (min-width: 992px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+        
+        .image-section {
+            flex: 1;
+            position: relative;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--left-bg-image);
+            background-size: var(--left-bg-size);
+            background-position: var(--left-bg-position);
+        }
+        
+        /* Gradiente opcional por cima da imagem */
+        .image-section.with-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            opacity: 0.6;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .image-section > * {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .main-image-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .garment-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .main-image-container:hover .garment-image {
+            transform: scale(1.03);
+        }
+        
+        .designer-photo {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            object-fit: cover;
+            z-index: 10;
+        }
+        
+        .image-gallery {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 500px;
+            overflow-x: auto;
+            padding: 10px 5px;
+        }
+        
+        .gallery-thumb {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            background: var(--card-bg);
+        }
+        
+        .gallery-thumb:hover, .gallery-thumb.active {
+            opacity: 1;
+            border-color: var(--card-bg);
+            transform: scale(1.05);
+        }
+        
+        .content-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: var(--content-bg);
+            background-image: var(--right-bg-image);
+            background-size: var(--right-bg-size);
+            background-position: var(--right-bg-position);
+        }
+        
+        .garment-title {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .designer-name {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .designer-name i {
+            font-size: 1rem;
+        }
+        
+        .garment-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            max-height: 40vh;
+            overflow-y: auto;
+            padding-right: 15px;
+        }
+        
+        .garment-description::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .garment-description::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .garment-description::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .custom-features {
+            margin-top: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-title i {
+            color: var(--accent-color);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .feature-value {
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .feature-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s ease;
+        }
+        
+        .feature-link:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        
+        .feature-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 5px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .signature-image {
+            max-width: 150px;
+            height: auto;
+            filter: invert(0.3);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .color-dot {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            width: 100%;
+        }
+        
+        .loading i {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        
+        .error {
+            text-align: center;
+            padding: 50px;
+            color: #dc143c;
+            font-size: 1.2rem;
+        }
+        
+        .error-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .image-section, .content-section {
+                padding: 20px;
+            }
+            
+            .garment-title {
+                font-size: 2.2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .designer-photo {
+                width: 60px;
+                height: 60px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; opacity: 0; }
+        .delay-2 { animation-delay: 0.2s; opacity: 0; }
+        .delay-3 { animation-delay: 0.3s; opacity: 0; }
+        .delay-4 { animation-delay: 0.4s; opacity: 0; }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Carregando...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fashionData = {
+            designers: [
+                {
+                    id: "vitoria",
+                    name: "Vitória Almeida Pinheiro",
+                    photo: "vitoria.png",
+                    colors: {
+                        primary: "#8B0000",  // Vermelho cereja escuro
+                        primaryDark: "#660000",
+                        bg: "#f8f8f8",
+                        text: "#333333",
+                        accent: "#d4af37",
+                        contentBg: "#ffffff"
+                    },
+                    background: {
+                        left: {
+                            type: "image",
+                            value: "url('./textura-marmore.jpg')",
+                            useOverlay: false  // NOVO: controla se usa o gradiente por cima
+                        },
+                        right: {
+                            type: "color",
+                            value: "#ffffff"
+                        }
+                    },
+                    garments: [
+                        {
+                            id: "corset-transcender",
+                            title: "Corset Transcender",
+                            description: [
+                                "Corset ombro a ombro em crochê com franjas de pedrarias e barbatanas que garantem sustentação.",
+                                "Peça artesanal, 100% feita à mão no Brasil, que valoriza os saberes manuais ancestrais e une tradição e design contemporâneo."
+                            ],
+                            images: [
+                                "corset.jpg"
+                            ],
+                            features: [
+                                { 
+                                    label: "Código de Autenticidade", 
+                                    value: "001/10/DND-A7F3" 
+                                },
+                                { 
+                                    label: "Marca", 
+                                    value: "Dandá" 
+                                },
+                                { 
+                                    label: "Local de Produção", 
+                                    value: "Jericoacoara, Ceará" 
+                                },
+                                { 
+                                    label: "Designer/Diretora Criativa", 
+                                    value: "Vitória Almeida Pinheiro" 
+                                },
+                                { 
+                                    label: "Artesã Responsável", 
+                                    value: "Maria Saiure" 
+                                },
+                                { 
+                                    label: "Tempo de Confecção", 
+                                    value: "10 horas" 
+                                },
+                                { 
+                                    label: "Matéria-prima", 
+                                    value: "Fio 100% viscose" 
+                                },
+                                { 
+                                    label: "Técnica Utilizada", 
+                                    value: "Crochê com aplicações em pedrarias" 
+                                },
+                                { 
+                                    label: "Coleção", 
+                                    value: "Transcender" 
+                                },
+                                { 
+                                    label: "Instagram", 
+                                    type: "link",
+                                    value: "@Dandá",
+                                    url: "https://instagram.com/Dandá"
+                                },
+                                { 
+                                    label: "Cuidados com a Peça", 
+                                    value: "Lavar à mão com sabão neutro. Evitar torcer ou esfregar a peça. Secar à sombra, em superfície plana. Armazenar dobrada, evitando pendurar para não deformar. Evitar contato com produtos químicos, perfumes ou água quente."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        class FashionApp {
+            constructor() {
+                this.currentDesigner = null;
+                this.currentGarment = null;
+                this.init();
+            }
+            
+            init() {
+                this.parseRoute();
+                if (this.currentDesigner && this.currentGarment) {
+                    this.loadGarmentPage();
+                } else {
+                    this.showError("Página não encontrada. Acesse através de um link válido.");
+                }
+            }
+            
+            parseRoute() {
+                const params = new URLSearchParams(window.location.search);
+                if (params.has('designer') && params.has('garment')) {
+                    this.currentDesigner = params.get('designer');
+                    this.currentGarment = params.get('garment');
+                }
+            }
+            
+            loadGarmentPage() {
+                const designer = fashionData.designers.find(d => d.id === this.currentDesigner);
+                
+                if (!designer) {
+                    this.showError(`Designer "${this.currentDesigner}" não encontrada`);
+                    return;
+                }
+                
+                const garment = designer.garments.find(g => g.id === this.currentGarment);
+                
+                if (!garment) {
+                    this.showError(`Roupa "${this.currentGarment}" não encontrada`);
+                    return;
+                }
+                
+                this.renderPage(designer, garment);
+            }
+            
+            applyDesignerColors(colors, background) {
+                document.documentElement.style.setProperty('--primary-color', colors.primary);
+                document.documentElement.style.setProperty('--primary-dark', colors.primaryDark);
+                document.documentElement.style.setProperty('--bg-color', colors.bg);
+                document.documentElement.style.setProperty('--text-color', colors.text);
+                document.documentElement.style.setProperty('--accent-color', colors.accent);
+                document.documentElement.style.setProperty('--content-bg', colors.contentBg || '#ffffff');
+                
+                // Aplica os backgrounds
+                if (background && background.left) {
+                    this.applyBackground('left', background.left);
+                }
+                
+                if (background && background.right) {
+                    this.applyBackground('right', background.right);
+                }
+            }
+            
+            applyBackground(side, config) {
+                const propertyPrefix = side === 'left' ? '--left' : '--right';
+                const imageSection = document.querySelector('.image-section');
+                
+                switch(config.type) {
+                    case 'image':
+                        document.documentElement.style.setProperty(`${propertyPrefix}-bg-image`, config.value);
+                        document.documentElement.style.setProperty(`${propertyPrefix}-bg-size`, 'cover');
+                        document.documentElement.style.setProperty(`${propertyPrefix}-bg-position`, 'center');
+                        
+                        // Controla se adiciona o overlay com gradiente
+                        if (config.useOverlay && imageSection) {
+                            imageSection.classList.add('with-overlay');
+                        } else if (imageSection) {
+                            imageSection.classList.remove('with-overlay');
+                        }
+                        break;
+                    
+                    case 'color':
+                        document.documentElement.style.setProperty(`${propertyPrefix}-bg-image`, 'none');
+                        if (side === 'left') {
+                            document.documentElement.style.setProperty('--primary-color', config.value);
+                            document.documentElement.style.setProperty('--primary-dark', this.darkenColor(config.value, 20));
+                            if (imageSection) {
+                                imageSection.classList.add('with-overlay');
+                            }
+                        } else {
+                            document.documentElement.style.setProperty('--content-bg', config.value);
+                        }
+                        break;
+                    
+                    case 'gradient':
+                    default:
+                        document.documentElement.style.setProperty(`${propertyPrefix}-bg-image`, 'none');
+                        if (imageSection) {
+                            imageSection.classList.add('with-overlay');
+                        }
+                        break;
+                }
+            }
+            
+            darkenColor(color, percent) {
+                return color;
+            }
+            
+            renderPage(designer, garment) {
+                const app = document.getElementById('app');
+                
+                app.innerHTML = `
+                    <div class="container">
+                        <section class="image-section">
+                            <div class="main-image-container">
+                                <img src="${garment.images[0]}" alt="${garment.title}" class="garment-image">
+                                <img src="${designer.photo}" alt="${designer.name}" class="designer-photo">
+                            </div>
+                            
+                            ${garment.images.length > 1 ? `
+                            <div class="image-gallery">
+                                ${garment.images.map((image, index) => `
+                                    <img src="${image}" alt="${garment.title} - Foto ${index + 1}" 
+                                         class="gallery-thumb ${index === 0 ? 'active' : ''}">
+                                `).join('')}
+                            </div>
+                            ` : ''}
+                        </section>
+                        
+                        <section class="content-section">
+                            <h1 class="garment-title fade-in">${garment.title}</h1>
+                            <div class="designer-name fade-in delay-1">
+                                <i class="fas fa-user-circle"></i> Por ${designer.name}
+                            </div>
+                            
+                            <div class="garment-description fade-in delay-2">
+                                ${this.formatDescription(garment.description)}
+                            </div>
+                            
+                            ${garment.features && garment.features.length > 0 ? `
+                            <div class="custom-features fade-in delay-3">
+                                <h3 class="feature-title">
+                                    <i class="fas fa-list-alt"></i> Características da Peça
+                                </h3>
+                                
+                                <div class="features-grid">
+                                    ${garment.features.map(feature => this.renderFeature(feature)).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+                        </section>
+                    </div>
+                `;
+                
+                this.applyDesignerColors(designer.colors, designer.background);
+                this.setupImageGallery();
+            }
+            
+            renderFeature(feature) {
+                let valueHtml = '';
+                
+                switch(feature.type) {
+                    case 'link':
+                        valueHtml = `<a href="${feature.url}" target="_blank" class="feature-link">
+                                        ${feature.value} <i class="fas fa-external-link-alt"></i>
+                                    </a>`;
+                        break;
+                    
+                    case 'image':
+                        valueHtml = `<img src="${feature.value}" alt="${feature.label}" 
+                                         class="feature-image ${feature.class || ''}">`;
+                        break;
+                    
+                    default:
+                        valueHtml = feature.value;
+                }
+                
+                return `
+                    <div class="feature-card">
+                        <div class="feature-label">${feature.label}</div>
+                        <div class="feature-value">${valueHtml}</div>
+                    </div>
+                `;
+            }
+            
+            formatDescription(description) {
+                if (Array.isArray(description)) {
+                    return description.map(p => `<p>${p}</p>`).join('');
+                }
+                return `<p>${description}</p>`;
+            }
+            
+            setupImageGallery() {
+                const thumbs = document.querySelectorAll('.gallery-thumb');
+                const mainImage = document.querySelector('.garment-image');
+                
+                if (thumbs.length > 0 && mainImage) {
+                    thumbs.forEach(thumb => {
+                        thumb.addEventListener('click', function() {
+                            thumbs.forEach(t => t.classList.remove('active'));
+                            this.classList.add('active');
+                            mainImage.src = this.src;
+                        });
+                    });
+                }
+            }
+            
+            showError(message) {
+                const app = document.getElementById('app');
+                app.innerHTML = `
+                    <div class="error-container">
+                        <div class="error">
+                            <i class="fas fa-exclamation-triangle fa-2x"></i>
+                            <h2>Página não encontrada</h2>
+                            <p>${message}</p>
+                            <p>Exemplo de URL válida: <code>?designer=vitoria&garment=corset-transcender</code></p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new FashionApp();
+        });
+
+        window.addEventListener('popstate', () => {
+            new FashionApp();
+        });
+    </script>
+</body>
+</html>
